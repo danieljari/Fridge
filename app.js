@@ -1,5 +1,6 @@
 class FridgeApp {
     constructor() {
+      // UI Elements
       this.themeToggle = document.getElementById('theme-toggle');
       this.languageSelect = document.getElementById('language-select');
       this.pageTitle = document.getElementById('page-title');
@@ -8,9 +9,12 @@ class FridgeApp {
       this.itemInput = document.getElementById('item-input');
       this.categoryPicker = document.getElementById('category-picker');
   
+      // Data
       this.draggedItemIndex = null;
       this.awaitingExpireUpdate = null;
+      this.recognitionLang = localStorage.getItem('selectedLanguage') || 'sv-SE';
   
+      // Language Texts
       this.titles = {
         "en-US": {
           pageTitle: "My Fridge",
@@ -36,23 +40,23 @@ class FridgeApp {
         }
       };
   
-      this.recognitionLang = localStorage.getItem('selectedLanguage') || 'sv-SE';
       this.init();
     }
   
+    /** ------------------------------ INIT ------------------------------ */
     init() {
       this.setupTheme();
       this.setupLanguage();
       this.setupButtons();
-      this.loadItems();
       this.setupDragDrop();
+      this.loadItems();
     }
   
+    /** -------------------------- THEME SETUP -------------------------- */
     setupTheme() {
       if (localStorage.getItem('theme') === 'dark') {
         document.body.classList.add('dark');
         this.themeToggle.textContent = '☀️ Light Mode';
-        this.setCategoryTextColor('black');
       }
   
       this.themeToggle.addEventListener('click', () => {
@@ -60,16 +64,10 @@ class FridgeApp {
         const isDark = document.body.classList.contains('dark');
         this.themeToggle.textContent = isDark ? '☀️ Light Mode' : '🌙 Dark Mode';
         localStorage.setItem('theme', isDark ? 'dark' : 'light');
-        
       });
     }
   
-    setCategoryTextColor(color) {
-      document.querySelectorAll('.item-name').forEach(name => {
-        name.style.color = color;
-      });
-    }
-  
+    /** ------------------------- LANGUAGE SETUP ------------------------ */
     setupLanguage() {
       this.languageSelect.value = this.recognitionLang;
       this.updateLanguageTexts();
@@ -94,11 +92,13 @@ class FridgeApp {
       document.getElementById('title-meat').innerText = t.categories.meat;
     }
   
+    /** -------------------------- BUTTONS SETUP ------------------------ */
     setupButtons() {
       this.addButton.addEventListener('click', () => this.addItem(this.itemInput.value));
       this.voiceButton.addEventListener('click', () => this.startVoiceRecognition());
     }
   
+    /** ---------------------- VOICE RECOGNITION ------------------------ */
     startVoiceRecognition() {
       if (!('webkitSpeechRecognition' in window)) {
         alert('Speech Recognition not supported.');
@@ -113,22 +113,7 @@ class FridgeApp {
       recognition.onresult = (event) => {
         let transcript = event.results[0][0].transcript.trim().toLowerCase();
         transcript = this.wordToNumber(transcript);
-  
-        const items = this.getItems();
-        const match = transcript.match(/^(.+?)\s(\d+)$/); // name + number
-  
-        if (match) {
-          const [_, name, days] = match;
-          const existingIndex = items.findIndex(item => item.name.toLowerCase() === name);
-          if (existingIndex !== -1) {
-            this.updateItemExpiry(existingIndex, parseInt(days));
-          } else {
-            this.addItem(name, parseInt(days));
-          }
-        } else {
-          this.handleVoiceWithoutDays(transcript, items);
-        }
-  
+        this.processVoiceInput(transcript);
         this.voiceButton.classList.remove('listening');
       };
   
@@ -143,16 +128,27 @@ class FridgeApp {
       };
     }
   
+    processVoiceInput(transcript) {
+      const items = this.getItems();
+      const match = transcript.match(/^(.+?)\s(\d+)$/);
+  
+      if (match) {
+        const [_, name, days] = match;
+        const existingIndex = items.findIndex(item => item.name.toLowerCase() === name);
+        existingIndex !== -1 ? this.updateItemExpiry(existingIndex, parseInt(days)) : this.addItem(name, parseInt(days));
+      } else {
+        this.handleVoiceWithoutDays(transcript, items);
+      }
+    }
+  
     handleVoiceWithoutDays(transcript, items) {
       const existingIndex = items.findIndex(item => item.name.toLowerCase() === transcript);
   
       if (existingIndex !== -1) {
         this.awaitingExpireUpdate = existingIndex;
-        alert(
-          this.recognitionLang === 'sv-SE'
-            ? `Säg antal dagar kvar för ${items[existingIndex].name}`
-            : `Say how many days left for ${items[existingIndex].name}`
-        );
+        alert(this.recognitionLang === 'sv-SE'
+          ? `Säg antal dagar kvar för ${items[existingIndex].name}`
+          : `Say how many days left for ${items[existingIndex].name}`);
       } else {
         this.addItem(transcript);
       }
@@ -163,7 +159,8 @@ class FridgeApp {
         'noll': 0, 'ett': 1, 'en': 1, 'två': 2, 'tre': 3, 'fyra': 4,
         'fem': 5, 'sex': 6, 'sju': 7, 'åtta': 8, 'nio': 9, 'tio': 10,
         'elva': 11, 'tolv': 12, 'tretton': 13, 'fjorton': 14,
-        'femton': 15, 'sexton': 16, 'sjutton': 17, 'arton': 18, 'nitton': 19, 'tjugo': 20,
+        'femton': 15, 'sexton': 16, 'sjutton': 17, 'arton': 18,
+        'nitton': 19, 'tjugo': 20,
         'zero': 0, 'one': 1, 'two': 2, 'three': 3, 'four': 4,
         'five': 5, 'six': 6, 'seven': 7, 'eight': 8, 'nine': 9, 'ten': 10,
         'eleven': 11, 'twelve': 12, 'thirteen': 13, 'fourteen': 14,
@@ -177,14 +174,7 @@ class FridgeApp {
       return text;
     }
   
-    getItems() {
-      return JSON.parse(localStorage.getItem('fridgeItems')) || [];
-    }
-  
-    saveItems(items) {
-      localStorage.setItem('fridgeItems', JSON.stringify(items));
-    }
-  
+    /** ---------------------------- ITEM HANDLING ----------------------- */
     addItem(name, days = 7) {
       if (!name.trim()) return;
   
@@ -209,22 +199,37 @@ class FridgeApp {
       }
     }
   
+    deleteItem(event) {
+      const index = event.target.dataset.index;
+      const items = this.getItems();
+      items.splice(index, 1);
+      this.saveItems(items);
+      this.loadItems();
+    }
+  
+    editExpireDate(event) {
+      const index = event.target.dataset.index;
+      const newDays = prompt(
+        this.recognitionLang === 'sv-SE' ? 'Ange nya dagar till utgångsdatum:' : 'Enter new days until expiration:',
+        '7'
+      );
+  
+      if (newDays) this.updateItemExpiry(index, parseInt(newDays));
+    }
+  
+    /** ------------------------ ITEM RENDERING -------------------------- */
     loadItems() {
       const items = this.getItems();
       const today = new Date();
       const filteredItems = items.filter(item => {
         const expiry = new Date(item.expires);
-        const diff = (expiry - today) / (1000 * 60 * 60 * 24);
-        return diff >= -20;
+        return (expiry - today) / (1000 * 60 * 60 * 24) >= -20;
       });
   
       this.saveItems(filteredItems);
   
       document.querySelectorAll('.category ul').forEach(ul => ul.innerHTML = '');
-  
-      filteredItems.forEach((item, index) => {
-        this.createItemElement(item, index);
-      });
+      filteredItems.forEach((item, index) => this.createItemElement(item, index));
     }
   
     createItemElement(item, index) {
@@ -234,16 +239,7 @@ class FridgeApp {
       li.dataset.index = index;
   
       const daysLeft = this.calculateDaysLeft(item.expires);
-      let bgColor = 'white';
-  
-      if (daysLeft < 0) {
-        bgColor = daysLeft <= -3 ? 'lightblue' : '#a52a2a';
-      } else {
-        const percent = Math.min(100, (7 - daysLeft) / 7 * 100);
-        bgColor = `hsl(${120 - (percent * 1.2)}, 70%, 80%)`;
-      }
-  
-      li.style.backgroundColor = bgColor;
+      li.style.backgroundColor = this.getBackgroundColor(daysLeft);
   
       li.innerHTML = `
         <span class="item-name">${item.name}</span>
@@ -257,39 +253,31 @@ class FridgeApp {
       li.addEventListener('dragend', (e) => this.endDrag(e));
       li.addEventListener('touchstart', (e) => this.touchStartDrag(e));
   
-      const categoryList = document.querySelector(`#${item.category} ul`);
-      if (categoryList) {
-        categoryList.appendChild(li);
-      }
+      document.querySelector(`#${item.category} ul`).appendChild(li);
     }
   
     calculateDaysLeft(dateString) {
       const today = new Date();
       const expiry = new Date(dateString);
-      const diffTime = expiry - today;
-      return Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+      return Math.ceil((expiry - today) / (1000 * 60 * 60 * 24));
     }
   
-    editExpireDate(event) {
-      const index = event.target.dataset.index;
-      const newDays = prompt(
-        this.recognitionLang === 'sv-SE'
-          ? 'Ange nya dagar till utgångsdatum:'
-          : 'Enter new days until expiration:',
-        '7'
-      );
-  
-      if (newDays) {
-        this.updateItemExpiry(index, parseInt(newDays));
-      }
+    getBackgroundColor(daysLeft) {
+      if (daysLeft < 0) return daysLeft <= -3 ? 'lightblue' : '#a52a2a';
+      const percent = Math.min(100, (7 - daysLeft) / 7 * 100);
+      return `hsl(${120 - (percent * 1.2)}, 70%, 80%)`;
     }
   
-    deleteItem(event) {
-      const index = event.target.dataset.index;
-      const items = this.getItems();
-      items.splice(index, 1);
-      this.saveItems(items);
-      this.loadItems();
+    /** --------------------------- DRAG & DROP -------------------------- */
+    setupDragDrop() {
+      document.querySelectorAll('.category').forEach(category => {
+        category.addEventListener('dragover', (e) => e.preventDefault());
+        category.addEventListener('drop', (e) => this.handleDrop(e, category.id));
+      });
+  
+      this.categoryPicker.querySelectorAll('button').forEach(button => {
+        button.addEventListener('click', () => this.handleDrop(null, button.dataset.category));
+      });
     }
   
     startDrag(event) {
@@ -308,28 +296,12 @@ class FridgeApp {
       this.categoryPicker.classList.remove('hidden');
     }
   
-    setupDragDrop() {
-      document.querySelectorAll('.category').forEach(category => {
-        category.addEventListener('dragover', (e) => e.preventDefault());
-        category.addEventListener('drop', (e) => {
-          e.preventDefault();
-          if (this.draggedItemIndex !== null) {
-            this.moveItemToCategory(this.draggedItemIndex, category.id);
-            this.draggedItemIndex = null;
-            this.categoryPicker.classList.add('hidden');
-          }
-        });
-      });
-  
-      this.categoryPicker.querySelectorAll('button').forEach(button => {
-        button.addEventListener('click', (e) => {
-          if (this.draggedItemIndex !== null) {
-            this.moveItemToCategory(this.draggedItemIndex, button.dataset.category);
-            this.draggedItemIndex = null;
-            this.categoryPicker.classList.add('hidden');
-          }
-        });
-      });
+    handleDrop(event, newCategory) {
+      if (this.draggedItemIndex !== null) {
+        this.moveItemToCategory(this.draggedItemIndex, newCategory);
+        this.draggedItemIndex = null;
+        this.categoryPicker.classList.add('hidden');
+      }
     }
   
     moveItemToCategory(index, newCategory) {
@@ -340,7 +312,17 @@ class FridgeApp {
         this.loadItems();
       }
     }
+  
+    /** -------------------------- STORAGE HELPERS ----------------------- */
+    getItems() {
+      return JSON.parse(localStorage.getItem('fridgeItems')) || [];
+    }
+  
+    saveItems(items) {
+      localStorage.setItem('fridgeItems', JSON.stringify(items));
+    }
   }
   
+  /** --------------------------- APP START ----------------------------- */
   document.addEventListener('DOMContentLoaded', () => new FridgeApp());
   
