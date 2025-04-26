@@ -1,15 +1,15 @@
-/* General styling */
 body {
     font-family: Arial, sans-serif;
     text-align: center;
     background-color: #f1f1f1;
+    margin: 0;
+    padding: 0;
   }
   
   h1 {
     color: #333;
   }
   
-  /* Input and buttons */
   .input-section {
     margin: 20px;
   }
@@ -37,9 +37,13 @@ body {
     background-color: #45a049;
   }
   
-  /* Category boxes */
+  /* Voice button when listening */
+  #voice-button.listening {
+    background-color: purple;
+  }
+  
   .category {
-    margin: 20px;
+    margin: 10px;
     padding: 10px;
     border: 1px solid #ccc;
     display: inline-block;
@@ -63,7 +67,6 @@ body {
     max-height: 300px;
   }
   
-  /* Fridge items */
   .fridge-item {
     margin: 5px;
     padding: 10px;
@@ -74,6 +77,7 @@ body {
     justify-content: space-between;
     align-items: center;
     margin-bottom: 10px;
+    background-color: white;
     transition: background-color 0.3s ease;
   }
   
@@ -91,28 +95,43 @@ body {
     background-color: darkred;
   }
   
-  /* Freshness color indicators */
-  .fridge-item.green {
-    background-color: lightgreen;
+  /* Mini category picker */
+  #category-picker {
+    position: fixed;
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: white;
+    border: 1px solid #ccc;
+    padding: 10px;
+    border-radius: 15px;
+    display: flex;
+    gap: 10px;
+    z-index: 1000;
   }
   
-  .fridge-item.yellow {
-    background-color: yellow;
+  #category-picker.hidden {
+    display: none;
   }
   
-  .fridge-item.red {
-    background-color: lightcoral;
+  #category-picker button {
+    background: none;
+    border: none;
+    font-size: 1.5em;
+    cursor: pointer;
   }
   
-  /* Responsive */
+  /* Mobile side-by-side */
   @media screen and (max-width: 600px) {
-    .category {
-      width: 100%;
-      margin: 10px 0;
+    #fridge-container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 10px;
     }
-  
-    .category ul {
-      max-height: 200px;
+    .category {
+      width: 45%;
+      min-width: 150px;
     }
   }
   
