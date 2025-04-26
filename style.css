@@ -121,11 +121,10 @@ body {
     cursor: pointer;
   }
   
-  @media screen and (max-width: 600px) {
+  @media screen and (max-width: 800px) {
     #fridge-container {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
       gap: 10px;
       overflow-x: hidden; /* prevent horizontal scroll */
       padding: 10px;
