@@ -1,13 +1,38 @@
-body {
+:root {
+    --bg-color: #f1f1f1;
+    --text-color: #333;
+    --primary-button: #4CAF50;
+    --primary-hover: #45a049;
+    --item-bg: white;
+    --item-border: #ccc;
+    --category-bg: #f7f7f7;
+  }
+  
+  body.dark {
+    --bg-color: #0a0a0a;
+    --text-color: #4c4b4b;
+    --primary-button: #6a0dad;
+    --primary-hover: #5c00b3;
+    --item-bg: #1a1a1a;
+    --item-border: #555;
+    --category-bg: #121212;
+    .item-name {
+      color: #080808;
+    }
+  }
+  
+  body {
     font-family: Arial, sans-serif;
     text-align: center;
-    background-color: #f1f1f1;
+    background-color: var(--bg-color);
+    color: var(--text-color);
     margin: 0;
     padding: 0;
+    transition: background-color 0.3s, color 0.3s;
   }
   
   h1 {
-    color: #333;
+    color: var(--text-color);
   }
   
   .input-section {
@@ -20,7 +45,9 @@ body {
     padding: 10px;
     margin: 5px;
     border-radius: 5px;
-    border: 1px solid #ccc;
+    border: 1px solid var(--item-border);
+    background: var(--item-bg);
+    color: var(--text-color);
   }
   
   .input-section input {
@@ -28,16 +55,15 @@ body {
   }
   
   .input-section button {
-    background-color: #4CAF50;
+    background-color: var(--primary-button);
     color: white;
     cursor: pointer;
   }
   
   .input-section button:hover {
-    background-color: #45a049;
+    background-color: var(--primary-hover);
   }
   
-  /* Voice button when listening */
   #voice-button.listening {
     background-color: purple;
   }
@@ -45,18 +71,19 @@ body {
   .category {
     margin: 10px;
     padding: 10px;
-    border: 1px solid #ccc;
+    border: 1px solid var(--item-border);
     display: inline-block;
     width: 250px;
     vertical-align: top;
     border-radius: 10px;
-    background-color: #f7f7f7;
+    background-color: var(--category-bg);
     min-height: 200px;
+    transition: background-color 0.3s;
   }
   
   .category h2 {
     font-size: 1.2em;
-    color: #333;
+    color: var(--text-color);
   }
   
   .category ul {
@@ -70,17 +97,18 @@ body {
   .fridge-item {
     margin: 5px;
     padding: 10px;
-    border: 1px solid #ccc;
+    border: 1px solid var(--item-border);
     cursor: move;
     border-radius: 5px;
     display: flex;
     justify-content: space-between;
     align-items: center;
     margin-bottom: 10px;
-    background-color: white;
+    background-color: var(--item-bg);
     transition: background-color 0.3s ease;
   }
   
+
   .fridge-item button {
     background-color: red;
     color: white;
@@ -101,8 +129,8 @@ body {
     bottom: 10px;
     left: 50%;
     transform: translateX(-50%);
-    background: white;
-    border: 1px solid #ccc;
+    background: var(--item-bg);
+    border: 1px solid var(--item-border);
     padding: 10px;
     border-radius: 15px;
     display: flex;
@@ -125,7 +153,7 @@ body {
     #fridge-container {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
-      overflow-x: hidden; /* prevent horizontal scroll */
+      overflow-x: hidden;
       padding: 5px;
     }
   
@@ -136,8 +164,16 @@ body {
       padding: 5px;
     }
   }
+  
   @media screen and (max-width: 600px) {
     .category h2 {
       font-size: 0.9em;
     }
   }
+  
+  .item-name {
+    
+    color: var(--text-color);
+    transition: color 0.3s ease;
+  }
+  
