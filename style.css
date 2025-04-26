@@ -1,0 +1,118 @@
+/* General styling */
+body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    background-color: #f1f1f1;
+  }
+  
+  h1 {
+    color: #333;
+  }
+  
+  /* Input and buttons */
+  .input-section {
+    margin: 20px;
+  }
+  
+  .input-section input,
+  .input-section button,
+  .input-section select {
+    padding: 10px;
+    margin: 5px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+  }
+  
+  .input-section input {
+    width: 200px;
+  }
+  
+  .input-section button {
+    background-color: #4CAF50;
+    color: white;
+    cursor: pointer;
+  }
+  
+  .input-section button:hover {
+    background-color: #45a049;
+  }
+  
+  /* Category boxes */
+  .category {
+    margin: 20px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    display: inline-block;
+    width: 250px;
+    vertical-align: top;
+    border-radius: 10px;
+    background-color: #f7f7f7;
+    min-height: 200px;
+  }
+  
+  .category h2 {
+    font-size: 1.2em;
+    color: #333;
+  }
+  
+  .category ul {
+    list-style-type: none;
+    padding-left: 0;
+    margin: 0;
+    overflow-y: auto;
+    max-height: 300px;
+  }
+  
+  /* Fridge items */
+  .fridge-item {
+    margin: 5px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    cursor: move;
+    border-radius: 5px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+    transition: background-color 0.3s ease;
+  }
+  
+  .fridge-item button {
+    background-color: red;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    padding: 5px;
+    cursor: pointer;
+    font-size: 1.2em;
+  }
+  
+  .fridge-item button:hover {
+    background-color: darkred;
+  }
+  
+  /* Freshness color indicators */
+  .fridge-item.green {
+    background-color: lightgreen;
+  }
+  
+  .fridge-item.yellow {
+    background-color: yellow;
+  }
+  
+  .fridge-item.red {
+    background-color: lightcoral;
+  }
+  
+  /* Responsive */
+  @media screen and (max-width: 600px) {
+    .category {
+      width: 100%;
+      margin: 10px 0;
+    }
+  
+    .category ul {
+      max-height: 200px;
+    }
+  }
+  
