@@ -125,7 +125,6 @@ body {
     #fridge-container {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
-      gap: 20px;
       overflow-x: hidden; /* prevent horizontal scroll */
       padding: 5px;
     }
