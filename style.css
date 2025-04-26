@@ -125,13 +125,13 @@ body {
     #fridge-container {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
-      gap: 10px;
+      gap: 20px;
       overflow-x: hidden; /* prevent horizontal scroll */
-      padding: 10px;
+      padding: 5px;
     }
   
     .category {
-      width: 100%;
+      width: 80%;
       min-width: 0;
       min-height: 150px;
       padding: 5px;
@@ -139,6 +139,6 @@ body {
   }
   @media screen and (max-width: 600px) {
     .category h2 {
-      font-size: 0.9em;
+      font-size: 0.7em;
     }
   }
