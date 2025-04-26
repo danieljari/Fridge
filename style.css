@@ -121,17 +121,24 @@ body {
     cursor: pointer;
   }
   
-  /* Mobile side-by-side */
   @media screen and (max-width: 600px) {
     #fridge-container {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
       gap: 10px;
+      overflow-x: hidden; /* prevent horizontal scroll */
+      padding: 10px;
     }
+  
     .category {
-      width: 45%;
-      min-width: 150px;
+      width: 100%;
+      min-width: 0;
+      min-height: 150px;
+      padding: 5px;
     }
   }
-  
+  @media screen and (max-width: 600px) {
+    .category h2 {
+      font-size: 0.9em;
+    }
+  }

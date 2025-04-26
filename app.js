@@ -12,27 +12,29 @@ document.addEventListener('DOMContentLoaded', function () {
         addButton: "Add Item",
         voiceButton: "Voice Input",
         categories: {
-            unsorted: "📦 Unsorted",
-            dairy: "🥛 Dairy",
-            vegetables: "🥦 Vegetables",
-            meat: "🍖 Meat",
-      }
-    },
+          unsorted: "📦 Unsorted",
+          dairy: "🥛 Dairy",
+          vegetables: "🥦 Vegetables",
+          meat: "🍖 Meat"
+        }
+      },
       "sv-SE": {
         pageTitle: "Min Kyl",
         addButton: "Lägg till",
         voiceButton: "Röstinmatning",
         categories: {
-            unsorted: "📦 Okategoriserat",
-            dairy: "🥛 Mejeri",
-            vegetables: "🥦 Grönsaker",
-            meat: "🍖 Kött"
-          }
+          unsorted: "📦 Okategoriserat",
+          dairy: "🥛 Mejeri",
+          vegetables: "🥦 Grönsaker",
+          meat: "🍖 Kött"
         }
+      }
     };
   
     let draggedItemIndex = null;
     let recognitionLang = localStorage.getItem('selectedLanguage') || 'sv-SE';
+    let awaitingExpireUpdate = null;
+  
     languageSelect.value = recognitionLang;
     updateLanguageTexts();
   
@@ -43,19 +45,17 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   
     function updateLanguageTexts() {
-        const t = titles[recognitionLang];
-        pageTitle.innerHTML = t.pageTitle;
-        itemInput.placeholder = t.addButton + '...';
-        addButton.textContent = t.addButton;
-        voiceButton.textContent = t.voiceButton;
-      
-       
-        document.getElementById('title-unsorted').innerHTML = t.categories.unsorted;
-        document.getElementById('title-dairy').innerHTML = t.categories.dairy;
-        document.getElementById('title-vegetables').innerHTML = t.categories.vegetables;
-        document.getElementById('title-meat').innerHTML = t.categories.meat;
+      const t = titles[recognitionLang];
+      pageTitle.innerHTML = t.pageTitle;
+      itemInput.placeholder = t.addButton + '...';
+      addButton.textContent = t.addButton;
+      voiceButton.textContent = t.voiceButton;
+  
+      document.getElementById('title-unsorted').innerText = t.categories.unsorted;
+      document.getElementById('title-dairy').innerText = t.categories.dairy;
+      document.getElementById('title-vegetables').innerText = t.categories.vegetables;
+      document.getElementById('title-meat').innerText = t.categories.meat;
     }
-      
   
     addButton.addEventListener('click', () => addItem(itemInput.value));
     voiceButton.addEventListener('click', startVoiceRecognition);
@@ -73,19 +73,62 @@ document.addEventListener('DOMContentLoaded', function () {
       recognition.start();
   
       recognition.onresult = function (event) {
-        const transcript = event.results[0][0].transcript;
-        addItem(transcript);
+        const transcript = event.results[0][0].transcript.trim().toLowerCase();
+        const items = JSON.parse(localStorage.getItem('fridgeItems')) || [];
+  
+        if (awaitingExpireUpdate !== null) {
+          const match = transcript.match(/(\d+)/);
+          if (match) {
+            const days = parseInt(match[1]);
+            updateItemExpiry(awaitingExpireUpdate, days);
+            awaitingExpireUpdate = null;
+          } else {
+            alert(
+              recognitionLang === 'sv-SE'
+                ? 'Vänligen säg antal dagar.'
+                : 'Please say the number of days.'
+            );
+          }
+        } else {
+          const existingIndex = items.findIndex(
+            item => item.name.toLowerCase() === transcript
+          );
+  
+          if (existingIndex !== -1) {
+            awaitingExpireUpdate = existingIndex;
+            alert(
+              recognitionLang === 'sv-SE'
+                ? `Säg antal dagar kvar för ${items[existingIndex].name}`
+                : `Say how many days left for ${items[existingIndex].name}`
+            );
+          } else {
+            addItem(transcript);
+          }
+        }
+  
         voiceButton.classList.remove('listening');
       };
   
       recognition.onerror = function (event) {
         console.error('Speech recognition error', event);
         voiceButton.classList.remove('listening');
+        awaitingExpireUpdate = null;
       };
   
       recognition.onend = function () {
         voiceButton.classList.remove('listening');
       };
+    }
+  
+    function updateItemExpiry(index, days) {
+      const items = JSON.parse(localStorage.getItem('fridgeItems')) || [];
+      if (items[index]) {
+        const newExpiry = new Date();
+        newExpiry.setDate(newExpiry.getDate() + days);
+        items[index].expires = newExpiry;
+        localStorage.setItem('fridgeItems', JSON.stringify(items));
+        loadItems();
+      }
     }
   
     function loadItems() {
@@ -130,10 +173,10 @@ document.addEventListener('DOMContentLoaded', function () {
       const daysLeft = calculateDaysLeft(item.expires);
       let bgColor = 'white';
       if (daysLeft < 0) {
-        bgColor = daysLeft <= -3 ? 'lightblue' : '#a52a2a'; // expired 3 days = blue, otherwise brown
+        bgColor = daysLeft <= -3 ? 'lightblue' : '#a52a2a';
       } else {
         const percent = Math.min(100, (7 - daysLeft) / 7 * 100);
-        bgColor = `hsl(${120 - (percent * 1.2)}, 70%, 80%)`; // green to red
+        bgColor = `hsl(${120 - (percent * 1.2)}, 70%, 80%)`;
       }
   
       li.style.backgroundColor = bgColor;
@@ -180,7 +223,12 @@ document.addEventListener('DOMContentLoaded', function () {
   
     function editExpireDate(event) {
       const index = event.target.dataset.index;
-      const newDays = prompt(recognitionLang === 'sv-SE' ? 'Ange nya dagar till utgångsdatum:' : 'Enter new days until expiration:', '7');
+      const newDays = prompt(
+        recognitionLang === 'sv-SE'
+          ? 'Ange nya dagar till utgångsdatum:'
+          : 'Enter new days until expiration:',
+        '7'
+      );
       if (newDays) {
         const items = JSON.parse(localStorage.getItem('fridgeItems')) || [];
         const expires = new Date();
@@ -199,7 +247,7 @@ document.addEventListener('DOMContentLoaded', function () {
       loadItems();
     }
   
-    // Drop and Picker
+    // Drag and drop between categories
     document.querySelectorAll('.category').forEach(category => {
       category.addEventListener('dragover', (e) => e.preventDefault());
   
