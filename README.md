@@ -1,3 +1,6 @@
+danieljari.github.io/Fridge/
+
+
 # Daily Frdige app
 Daily Fridge App is a simple, clean web application designed to help you keep track of the food in your fridge.
 
