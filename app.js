@@ -51,6 +51,7 @@ class FridgeApp {
       this.applyLanguage();
       this.bindUIActions();
       this.loadItems();
+      this.scheduleMidnightRefresh();
     };
   
     /** ----------------------- THEME HANDLING --------------------- */
@@ -65,6 +66,18 @@ class FridgeApp {
       localStorage.setItem('theme', isDark ? 'dark' : 'light');
       this.elements.themeToggle.textContent = isDark ? '☀️ Light Mode' : '🌙 Dark Mode';
     };
+  
+    /** ---------------------- REFRESH AT MIDNIGHT ------------------- */
+    scheduleMidnightRefresh() {
+      const now = new Date();
+      const midnight = new Date();
+      midnight.setHours(24, 0, 0, 0);
+      const timeUntilMidnight = midnight.getTime() - now.getTime();
+      setTimeout(() => {
+        this.loadItems();
+        this.scheduleMidnightRefresh();
+      }, timeUntilMidnight);
+    }
   
     /** ---------------------- LANGUAGE HANDLING ------------------- */
     applyLanguage = () => {
@@ -230,7 +243,6 @@ class FridgeApp {
   
       recognition.onresult = (event) => {
         let transcript = event.results[0][0].transcript.trim().toLowerCase();
-        transcript = this.convertWordsToNumbers(transcript);
         this.processVoiceCommand(transcript);
         this.elements.voiceButton.classList.remove('listening');
       };
@@ -241,31 +253,50 @@ class FridgeApp {
       };
     };
   
+    /** -------------------- UPDATED SMART PARSING -------------------- */
     processVoiceCommand = (transcript) => {
-      const items = this.getItems();
-      const match = transcript.match(/^(.+?)\s(\d+)$/);
-  
-      if (match) {
-        const [_, name, days] = match;
-        const existing = items.findIndex(item => item.name.toLowerCase() === name);
-        existing !== -1 ? this.updateExpiry(existing, parseInt(days)) : this.addItem(name, parseInt(days));
-      } else {
-        this.handlePartialVoice(transcript, items);
-      }
+        const items = this.getItems();
+        let normalizedTranscript = this.convertWordsToNumbers(transcript.toLowerCase());
+    
+        const numberMatch = normalizedTranscript.match(/\b\d+\b/);
+    
+        if (numberMatch) {
+            const number = parseInt(numberMatch[0]);
+            const index = normalizedTranscript.indexOf(numberMatch[0]);
+    
+            // Take only text BEFORE the number
+            let name = normalizedTranscript.substring(0, index).trim();
+    
+            // Clean possible trailing "dag", "dagar", "days"
+            name = name.replace(/\b(dag|dagar|day|days)\b/gi, '').trim();
+    
+            if (!name) return; // If no name before number, ignore
+    
+            const existing = items.findIndex(item => item.name.toLowerCase() === name.toLowerCase());
+            if (existing !== -1) {
+                this.updateExpiry(existing, number);
+            } else {
+                this.addItem(name, number);
+            }
+    
+        } else {
+            // No number detected: Full text is name
+            let name = normalizedTranscript.trim();
+            name = name.replace(/\b(dag|dagar|day|days)\b/gi, '').trim();
+    
+            if (!name) return;
+    
+            const existing = items.findIndex(item => item.name.toLowerCase() === name.toLowerCase());
+            if (existing !== -1) {
+                this.updateExpiry(existing, 7);
+            } else {
+                this.addItem(name, 7);
+            }
+        }
     };
+     
   
-    handlePartialVoice = (transcript, items) => {
-      const existing = items.findIndex(item => item.name.toLowerCase() === transcript);
-      if (existing !== -1) {
-        this.state.awaitingExpireUpdate = existing;
-        alert(this.state.recognitionLang === 'sv-SE'
-          ? `Säg antal dagar kvar för ${items[existing].name}`
-          : `Say how many days left for ${items[existing].name}`);
-      } else {
-        this.addItem(transcript);
-      }
-    };
-  
+    /** -------------------- PARSE WORDS TO NUMBERS -------------------- */
     convertWordsToNumbers = (text) => {
       const map = {
         'noll': 0, 'ett': 1, 'en': 1, 'två': 2, 'tre': 3, 'fyra': 4,
@@ -275,17 +306,15 @@ class FridgeApp {
         'zero': 0, 'one': 1, 'two': 2, 'three': 3, 'four': 4, 'five': 5,
         'six': 6, 'seven': 7, 'eight': 8, 'nine': 9, 'ten': 10, 'eleven': 11,
         'twelve': 12, 'thirteen': 13, 'fourteen': 14, 'fifteen': 15,
-        'sixteen': 16, 'seventeen': 17, 'eighteen': 18, 'nineteen': 19,
-        'twenty': 20
+        'sixteen': 16, 'seventeen': 17, 'eighteen': 18, 'nineteen': 19, 'twenty': 20
       };
   
       for (const [word, num] of Object.entries(map)) {
-        text = text.replace(new RegExp(`\\b${word}\\b`, 'gi'), num);
+        const regex = new RegExp(`\\b${word}\\b`, 'gi');
+        text = text.replace(regex, num);
       }
       return text;
     };
   }
-  
-  // Launch the App
-  new FridgeApp();
+new FridgeApp();
   
