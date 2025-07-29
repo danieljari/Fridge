@@ -16,13 +16,17 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Basic validation
-        run: |
-          # Simple validation to check if HTML and JS files are valid
-          find . -name "*.html" -exec echo "Validating {}" \; -exec cat {} \; > /dev/null
-          find . -name "*.js" -exec echo "Validating {}" \; -exec cat {} \; > /dev/null
-          find . -name "*.css" -exec echo "Validating {}" \; -exec cat {} \; > /dev/null
-          echo "Basic validation passed"
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run tests
+        run: npm test
 
       - name: Dependabot metadata
         id: metadata
@@ -31,7 +35,7 @@ jobs:
           github-token: "${{ secrets.GITHUB_TOKEN }}"
 
       - name: Auto-merge Dependabot PRs
-        if: ${{ steps.metadata.outputs.update-type != 'version-update:semver-major' }}
+        if: ${{ success() && steps.metadata.outputs.update-type != 'version-update:semver-major' }}
         run: |
           gh pr merge --auto --merge "$PR_URL"
         env:
