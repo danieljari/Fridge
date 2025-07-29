@@ -19,27 +19,27 @@ class FridgeApp {
   
       this.texts = {
         "en-US": {
-          pageTitle: "🧊 My Fridge",
-          addButton: "➕ Add Item",
-          voiceButton: "🎤 Voice Input",
-          placeholder: "Add item with date...",
+          pageTitle: "🚀 Smart Fridge AI",
+          addButton: "✨ Add Fresh Item",
+          voiceButton: "🎙️ Voice Command",
+          placeholder: "Say or type: 'milk expires tomorrow' or 'bread 2025-08-15'...",
           categories: {
-            unsorted: "📦 Unsorted",
-            dairy: "🥛 Dairy",
-            vegetables: "🥦 Vegetables",
-            meat: "🍖 Meat"
+            unsorted: "🔮 Smart Storage",
+            dairy: "🥛 Dairy & Eggs",
+            vegetables: "🥬 Fresh Produce",
+            meat: "🥩 Proteins & Meat"
           }
         },
         "sv-SE": {
-          pageTitle: "🧊 Min Kyl",
-          addButton: "➕ Lägg till",
-          voiceButton: "🎤 Säg vara",
-          placeholder: "Lägg till kylvara med datum...",
+          pageTitle: "🚀 Smart Kyl AI",
+          addButton: "✨ Lägg till vara",
+          voiceButton: "🎙️ Röstkommando",
+          placeholder: "Säg eller skriv: 'mjölk går ut imorgon' eller 'bröd 2025-08-15'...",
           categories: {
-            unsorted: "📦 Okategoriserat",
-            dairy: "🥛 Mejeri",
-            vegetables: "🥦 Grönsaker",
-            meat: "🍖 Kött"
+            unsorted: "🔮 Smart Förvaring",
+            dairy: "🥛 Mejeri & Ägg",
+            vegetables: "🥬 Färska Råvaror",
+            meat: "🥩 Protein & Kött"
           }
         }
       };
