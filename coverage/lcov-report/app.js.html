@@ -23,9 +23,9 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">77.53% </span>
+                <span class="strong">77.59% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>283/365</span>
+                <span class='fraction'>284/366</span>
             </div>
         
             
@@ -44,9 +44,9 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">80% </span>
+                <span class="strong">80.05% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>272/340</span>
+                <span class='fraction'>273/341</span>
             </div>
         
             
@@ -916,18 +916,12 @@
 <a name='L851'></a><a href='#L851'>851</a>
 <a name='L852'></a><a href='#L852'>852</a>
 <a name='L853'></a><a href='#L853'>853</a>
-<a name='L854'></a><a href='#L854'>854</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L854'></a><a href='#L854'>854</a>
+<a name='L855'></a><a href='#L855'>855</a>
+<a name='L856'></a><a href='#L856'>856</a>
+<a name='L857'></a><a href='#L857'>857</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">177x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">177x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -1072,6 +1066,18 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">177x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1042x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1042x</span>
 <span class="cline-any cline-yes">1042x</span>
 <span class="cline-any cline-yes">1042x</span>
@@ -1771,16 +1777,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">class FridgeApp {
     constructor() {
-      this.elements = {
-        themeToggle: document.getElementById('theme-toggle'),
-        languageSelect: document.getElementById('language-select'),
-        pageTitle: document.getElementById('page-title'),
-        addButton: document.getElementById('add-button'),
-        voiceButton: document.getElementById('voice-button'),
-        itemInput: document.getElementById('item-input'),
-        categoryPicker: document.getElementById('category-picker'),
-        categoryLists: document.querySelectorAll('.category ul')
-      };
+      this.elements = {};
   
       this.state = {
         draggedItemIndex: null,
@@ -1790,27 +1787,27 @@
   
       this.texts = {
         "en-US": {
-          pageTitle: "🚀 Smart Fridge Manager",
-          addButton: "✨ Add Fresh Item",
-          voiceButton: "🎙️ Voice Command",
-          placeholder: "Say or type: 'milk expires tomorrow' or 'bread 2025-08-15'...",
+          pageTitle: "🧊 My Fridge",
+          addButton: "Add Item",
+          voiceButton: "🎤 Voice",
+          placeholder: "Add item with date (e.g. 'milk tomorrow' or 'bread 2025-08-15')",
           categories: {
-            unsorted: "🔮 Smart Storage",
-            dairy: "🥛 Dairy &amp; Eggs",
-            vegetables: "🥬 Fresh Produce",
-            meat: "🥩 Proteins &amp; Meat"
+            unsorted: "📦 Unsorted",
+            dairy: "🥛 Dairy",
+            vegetables: "🥦 Vegetables",
+            meat: "🍖 Meat"
           }
         },
         "sv-SE": {
-          pageTitle: "🚀 Smart Kylhanterare",
-          addButton: "✨ Lägg till vara",
-          voiceButton: "🎙️ Röstkommando",
-          placeholder: "Säg eller skriv: 'mjölk går ut imorgon' eller 'bröd 2025-08-15'...",
+          pageTitle: "🧊 Min Kyl",
+          addButton: "Lägg till",
+          voiceButton: "🎤 Röst",
+          placeholder: "Lägg till vara med datum (t.ex. 'mjölk imorgon' eller 'bröd 2025-08-15')",
           categories: {
-            unsorted: "🔮 Smart Förvaring",
-            dairy: "🥛 Mejeri &amp; Ägg",
-            vegetables: "🥬 Färska Råvaror",
-            meat: "🥩 Protein &amp; Kött"
+            unsorted: "📦 Okategoriserat",
+            dairy: "🥛 Mejeri",
+            vegetables: "🥦 Grönsaker",
+            meat: "🍖 Kött"
           }
         }
       };
@@ -1925,6 +1922,18 @@
   
     /** --------------------------- INIT --------------------------- */
     init = () =&gt; {
+      // Initialize DOM elements
+      this.elements = {
+        themeToggle: document.getElementById('theme-toggle'),
+        languageSelect: document.getElementById('language-select'),
+        pageTitle: document.getElementById('page-title'),
+        addButton: document.getElementById('add-button'),
+        voiceButton: document.getElementById('voice-button'),
+        itemInput: document.getElementById('item-input'),
+        categoryPicker: document.getElementById('category-picker'),
+        categoryLists: document.querySelectorAll('.category ul')
+      };
+      
       this.applyTheme();
       this.applyLanguage();
       this.bindUIActions();
@@ -2629,7 +2638,7 @@
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-07-29T21:29:42.718Z
+                at 2025-07-29T21:33:52.281Z
             </div>
         <script src="prettify.js"></script>
         <script>

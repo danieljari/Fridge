@@ -1,15 +1,6 @@
 class FridgeApp {
     constructor() {
-      this.elements = {
-        themeToggle: document.getElementById('theme-toggle'),
-        languageSelect: document.getElementById('language-select'),
-        pageTitle: document.getElementById('page-title'),
-        addButton: document.getElementById('add-button'),
-        voiceButton: document.getElementById('voice-button'),
-        itemInput: document.getElementById('item-input'),
-        categoryPicker: document.getElementById('category-picker'),
-        categoryLists: document.querySelectorAll('.category ul')
-      };
+      this.elements = {};
   
       this.state = {
         draggedItemIndex: null,
@@ -19,27 +10,27 @@ class FridgeApp {
   
       this.texts = {
         "en-US": {
-          pageTitle: "🚀 Smart Fridge Manager",
-          addButton: "✨ Add Fresh Item",
-          voiceButton: "🎙️ Voice Command",
-          placeholder: "Say or type: 'milk expires tomorrow' or 'bread 2025-08-15'...",
+          pageTitle: "🧊 My Fridge",
+          addButton: "Add Item",
+          voiceButton: "🎤 Voice",
+          placeholder: "Add item with date (e.g. 'milk tomorrow' or 'bread 2025-08-15')",
           categories: {
-            unsorted: "🔮 Smart Storage",
-            dairy: "🥛 Dairy & Eggs",
-            vegetables: "🥬 Fresh Produce",
-            meat: "🥩 Proteins & Meat"
+            unsorted: "📦 Unsorted",
+            dairy: "🥛 Dairy",
+            vegetables: "🥦 Vegetables",
+            meat: "🍖 Meat"
           }
         },
         "sv-SE": {
-          pageTitle: "🚀 Smart Kylhanterare",
-          addButton: "✨ Lägg till vara",
-          voiceButton: "🎙️ Röstkommando",
-          placeholder: "Säg eller skriv: 'mjölk går ut imorgon' eller 'bröd 2025-08-15'...",
+          pageTitle: "🧊 Min Kyl",
+          addButton: "Lägg till",
+          voiceButton: "🎤 Röst",
+          placeholder: "Lägg till vara med datum (t.ex. 'mjölk imorgon' eller 'bröd 2025-08-15')",
           categories: {
-            unsorted: "🔮 Smart Förvaring",
-            dairy: "🥛 Mejeri & Ägg",
-            vegetables: "🥬 Färska Råvaror",
-            meat: "🥩 Protein & Kött"
+            unsorted: "📦 Okategoriserat",
+            dairy: "🥛 Mejeri",
+            vegetables: "🥦 Grönsaker",
+            meat: "🍖 Kött"
           }
         }
       };
@@ -154,6 +145,18 @@ class FridgeApp {
   
     /** --------------------------- INIT --------------------------- */
     init = () => {
+      // Initialize DOM elements
+      this.elements = {
+        themeToggle: document.getElementById('theme-toggle'),
+        languageSelect: document.getElementById('language-select'),
+        pageTitle: document.getElementById('page-title'),
+        addButton: document.getElementById('add-button'),
+        voiceButton: document.getElementById('voice-button'),
+        itemInput: document.getElementById('item-input'),
+        categoryPicker: document.getElementById('category-picker'),
+        categoryLists: document.querySelectorAll('.category ul')
+      };
+      
       this.applyTheme();
       this.applyLanguage();
       this.bindUIActions();
