@@ -19,7 +19,7 @@ class FridgeApp {
   
       this.texts = {
         "en-US": {
-          pageTitle: "🚀 Smart Fridge AI",
+          pageTitle: "🚀 Smart Fridge Manager",
           addButton: "✨ Add Fresh Item",
           voiceButton: "🎙️ Voice Command",
           placeholder: "Say or type: 'milk expires tomorrow' or 'bread 2025-08-15'...",
@@ -31,7 +31,7 @@ class FridgeApp {
           }
         },
         "sv-SE": {
-          pageTitle: "🚀 Smart Kyl AI",
+          pageTitle: "🚀 Smart Kylhanterare",
           addButton: "✨ Lägg till vara",
           voiceButton: "🎙️ Röstkommando",
           placeholder: "Säg eller skriv: 'mjölk går ut imorgon' eller 'bröd 2025-08-15'...",
