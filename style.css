@@ -1,141 +1,295 @@
 :root {
-    --bg-color: #f1f1f1;
-    --text-color: #333;
-    --primary-button: #4CAF50;
-    --primary-hover: #45a049;
+    --bg-color: #f8f9fa;
+    --text-color: #212529;
+    --primary-button: #007bff;
+    --primary-hover: #0056b3;
+    --success-color: #28a745;
+    --warning-color: #ffc107;
+    --danger-color: #dc3545;
     --item-bg: white;
-    --item-border: #ccc;
-    --category-bg: #f7f7f7;
+    --item-border: #dee2e6;
+    --category-bg: #ffffff;
+    --shadow: 0 2px 4px rgba(0,0,0,0.1);
+    --border-radius: 8px;
+    --expired-bg: #f8d7da;
+    --expiring-bg: #fff3cd;
   }
   
   body.dark {
-    --bg-color: #0a0a0a;
-    --text-color: #4c4b4b;
-    --primary-button: #6a0dad;
-    --primary-hover: #5c00b3;
-    --item-bg: #1a1a1a;
-    --item-border: #555;
-    --category-bg: #121212;
-    .item-name {
-      color: #080808;
-    }
+    --bg-color: #121212;
+    --text-color: #e9ecef;
+    --primary-button: #0d6efd;
+    --primary-hover: #0b5ed7;
+    --item-bg: #1e1e1e;
+    --item-border: #495057;
+    --category-bg: #2d2d2d;
+    --shadow: 0 2px 4px rgba(0,0,0,0.3);
+    --expired-bg: #721c24;
+    --expiring-bg: #664d03;
+  }
+  
+  * {
+    box-sizing: border-box;
   }
   
   body {
-    font-family: Arial, sans-serif;
-    text-align: center;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     background-color: var(--bg-color);
     color: var(--text-color);
     margin: 0;
     padding: 0;
-    transition: background-color 0.3s, color 0.3s;
+    transition: all 0.3s ease;
+    line-height: 1.6;
   }
   
-  h1 {
-    color: var(--text-color);
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 1rem;
+  }
+  
+  .header {
+    text-align: center;
+    margin-bottom: 2rem;
+    padding: 1rem;
+    background: var(--category-bg);
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow);
+  }
+  
+  .header h1 {
+    margin: 0 0 1rem 0;
+    font-size: 2rem;
+    font-weight: 600;
   }
   
   .input-section {
-    margin: 20px;
-  }
-  
-  .input-section input,
-  .input-section button,
-  .input-section select {
-    padding: 10px;
-    margin: 5px;
-    border-radius: 5px;
-    border: 1px solid var(--item-border);
-    background: var(--item-bg);
-    color: var(--text-color);
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 1rem;
   }
   
   .input-section input {
-    width: 200px;
+    flex: 1;
+    min-width: 200px;
+    max-width: 300px;
+    padding: 0.75rem;
+    border: 2px solid var(--item-border);
+    border-radius: var(--border-radius);
+    background: var(--item-bg);
+    color: var(--text-color);
+    font-size: 1rem;
+    transition: border-color 0.3s ease;
+  }
+  
+  .input-section input:focus {
+    outline: none;
+    border-color: var(--primary-button);
   }
   
   .input-section button {
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: var(--border-radius);
     background-color: var(--primary-button);
     color: white;
+    font-size: 1rem;
+    font-weight: 500;
     cursor: pointer;
+    transition: all 0.3s ease;
+    white-space: nowrap;
   }
   
   .input-section button:hover {
     background-color: var(--primary-hover);
+    transform: translateY(-1px);
+  }
+  
+  .input-section button:active {
+    transform: translateY(0);
+  }
+  
+  #voice-button {
+    background-color: var(--success-color);
+    position: relative;
+  }
+  
+  #voice-button:hover {
+    background-color: #218838;
   }
   
   #voice-button.listening {
-    background-color: purple;
+    background-color: var(--danger-color);
+    animation: pulse 1.5s infinite;
+  }
+  
+  @keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+  }
+  
+  .controls {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin-bottom: 1rem;
+    flex-wrap: wrap;
+  }
+  
+  .controls select {
+    padding: 0.5rem;
+    border: 2px solid var(--item-border);
+    border-radius: var(--border-radius);
+    background: var(--item-bg);
+    color: var(--text-color);
+    font-size: 0.9rem;
+  }
+  
+  #fridge-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1rem;
+    margin-bottom: 2rem;
   }
   
   .category {
-    margin: 10px;
-    padding: 10px;
-    border: 1px solid var(--item-border);
-    display: inline-block;
-    width: 250px;
-    vertical-align: top;
-    border-radius: 10px;
-    background-color: var(--category-bg);
+    background: var(--category-bg);
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow);
+    padding: 1rem;
     min-height: 200px;
-    transition: background-color 0.3s;
+    transition: all 0.3s ease;
+  }
+  
+  .category:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.15);
   }
   
   .category h2 {
-    font-size: 1.2em;
+    margin: 0 0 1rem 0;
+    font-size: 1.25rem;
+    font-weight: 600;
     color: var(--text-color);
+    text-align: center;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid var(--item-border);
   }
   
   .category ul {
-    list-style-type: none;
-    padding-left: 0;
+    list-style: none;
+    padding: 0;
     margin: 0;
+    max-height: 400px;
     overflow-y: auto;
-    max-height: 300px;
   }
   
   .fridge-item {
-    margin: 5px;
-    padding: 10px;
+    background: var(--item-bg);
     border: 1px solid var(--item-border);
-    cursor: move;
-    border-radius: 5px;
+    border-radius: var(--border-radius);
+    padding: 0.75rem;
+    margin-bottom: 0.5rem;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 10px;
-    background-color: var(--item-bg);
-    transition: background-color 0.3s ease;
+    cursor: move;
+    transition: all 0.3s ease;
+    position: relative;
   }
   
-
+  .fridge-item:hover {
+    transform: translateX(4px);
+    box-shadow: var(--shadow);
+  }
+  
+  .fridge-item.expired {
+    background-color: var(--expired-bg);
+    border-color: var(--danger-color);
+  }
+  
+  .fridge-item.expiring-soon {
+    background-color: var(--expiring-bg);
+    border-color: var(--warning-color);
+  }
+  
+  .item-info {
+    flex: 1;
+    text-align: left;
+  }
+  
+  .item-name {
+    font-weight: 500;
+    margin-bottom: 0.25rem;
+    color: var(--text-color);
+  }
+  
+  .item-expiry {
+    font-size: 0.85rem;
+    color: #6c757d;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  
+  .days-left {
+    font-weight: 600;
+    padding: 0.2rem 0.5rem;
+    border-radius: 12px;
+    font-size: 0.75rem;
+    background: var(--primary-button);
+    color: white;
+  }
+  
+  .days-left.expired {
+    background: var(--danger-color);
+  }
+  
+  .days-left.expiring {
+    background: var(--warning-color);
+    color: #000;
+  }
+  
   .fridge-item button {
-    background-color: red;
+    background: var(--danger-color);
     color: white;
     border: none;
     border-radius: 50%;
-    padding: 5px;
+    width: 32px;
+    height: 32px;
     cursor: pointer;
-    font-size: 1.2em;
+    font-size: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    margin-left: 0.5rem;
   }
   
   .fridge-item button:hover {
-    background-color: darkred;
+    background: #c82333;
+    transform: scale(1.1);
   }
   
-  /* Mini category picker */
+  /* Category picker */
   #category-picker {
     position: fixed;
-    bottom: 10px;
+    bottom: 20px;
     left: 50%;
     transform: translateX(-50%);
-    background: var(--item-bg);
-    border: 1px solid var(--item-border);
-    padding: 10px;
-    border-radius: 15px;
+    background: var(--category-bg);
+    border: 2px solid var(--item-border);
+    padding: 0.75rem;
+    border-radius: 20px;
     display: flex;
-    gap: 10px;
+    gap: 0.5rem;
     z-index: 1000;
+    box-shadow: var(--shadow);
+    backdrop-filter: blur(10px);
   }
   
   #category-picker.hidden {
@@ -143,37 +297,130 @@
   }
   
   #category-picker button {
-    background: none;
-    border: none;
-    font-size: 1.5em;
+    background: var(--item-bg);
+    border: 1px solid var(--item-border);
+    border-radius: 12px;
+    padding: 0.5rem;
+    font-size: 1.2rem;
     cursor: pointer;
+    transition: all 0.3s ease;
+    min-width: 44px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
   
-  @media screen and (max-width: 800px) {
-    #fridge-container {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      overflow-x: hidden;
-      padding: 5px;
-    }
-  
-    .category {
-      width: 80%;
-      min-width: 0;
-      min-height: 150px;
-      padding: 5px;
-    }
+  #category-picker button:hover {
+    background: var(--primary-button);
+    color: white;
+    transform: scale(1.1);
   }
   
-  @media screen and (max-width: 600px) {
-    .category h2 {
-      font-size: 0.9em;
+  /* Mobile optimizations */
+  @media screen and (max-width: 768px) {
+    .container {
+      padding: 0.5rem;
     }
-  }
-  
-  .item-name {
     
-    color: var(--text-color);
-    transition: color 0.3s ease;
+    .header h1 {
+      font-size: 1.5rem;
+    }
+    
+    .input-section {
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+    
+    .input-section input {
+      min-width: unset;
+      width: 100%;
+    }
+    
+    .input-section button {
+      width: 100%;
+      padding: 1rem;
+    }
+    
+    #fridge-container {
+      grid-template-columns: 1fr;
+      gap: 0.75rem;
+    }
+    
+    .category {
+      min-height: 150px;
+    }
+    
+    .fridge-item {
+      padding: 1rem;
+    }
+    
+    .item-name {
+      font-size: 1rem;
+    }
+    
+    .item-expiry {
+      font-size: 0.8rem;
+    }
+    
+    #category-picker {
+      bottom: 10px;
+      padding: 0.5rem;
+      gap: 0.25rem;
+    }
+    
+    #category-picker button {
+      min-width: 40px;
+      height: 40px;
+      font-size: 1rem;
+    }
+  }
+  
+  @media screen and (max-width: 480px) {
+    .header {
+      padding: 0.75rem;
+    }
+    
+    .header h1 {
+      font-size: 1.25rem;
+    }
+    
+    .category h2 {
+      font-size: 1rem;
+    }
+    
+    .fridge-item {
+      padding: 0.75rem;
+    }
+    
+    .item-name {
+      font-size: 0.9rem;
+    }
+    
+    .item-expiry {
+      font-size: 0.75rem;
+    }
+    
+    .days-left {
+      font-size: 0.7rem;
+      padding: 0.15rem 0.4rem;
+    }
+  }
+  
+  /* Accessibility improvements */
+  @media (prefers-reduced-motion: reduce) {
+    * {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+  
+  /* Focus styles for keyboard navigation */
+  button:focus,
+  input:focus,
+  select:focus {
+    outline: 2px solid var(--primary-button);
+    outline-offset: 2px;
   }
   

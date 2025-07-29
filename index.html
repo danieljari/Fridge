@@ -2,41 +2,51 @@
 <html lang="sv">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
   <title>Min Kyl</title>
   <link rel="stylesheet" href="style.css">
+  <meta name="theme-color" content="#007bff">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
 </head>
 <body>
 
-<h1 id="page-title">Min Kyl</h1>
-
-<div class="input-section">
-    <select id="language-select">
-      <option value="sv-SE">🇸🇪 Svenska</option>
-      <option value="en-US">🇬🇧 English</option>
-    </select>
-    <input type="text" id="item-input" placeholder="Lägg till kylvara...">
-    <button id="add-button">➕ Lägg till</button>
-    <button id="voice-button">🎤 Säg vara</button>
-    <button id="theme-toggle">🌙 Dark Mode</button> 
+<div class="container">
+  <div class="header">
+    <h1 id="page-title">🧊 Min Kyl</h1>
+    
+    <div class="controls">
+      <select id="language-select">
+        <option value="sv-SE">🇸🇪 Svenska</option>
+        <option value="en-US">🇬🇧 English</option>
+      </select>
+      <button id="theme-toggle">🌙 Dark Mode</button>
+    </div>
+    
+    <div class="input-section">
+      <input type="text" id="item-input" placeholder="Lägg till kylvara med datum...">
+      <button id="add-button">➕ Lägg till</button>
+      <button id="voice-button">🎤 Säg vara</button>
+    </div>
   </div>
 
-<div id="fridge-container">
-  <div class="category" id="unsorted">
-    <h2 id="title-unsorted">📦 Okategoriserat</h2>
-    <ul></ul>
-  </div>
-  <div class="category" id="dairy">
-    <h2 id="title-dairy">🥛 Mejeri</h2>
-    <ul></ul>
-  </div>
-  <div class="category" id="vegetables">
-    <h2 id="title-vegetables">🥦 Grönsaker</h2>
-    <ul></ul>
-  </div>
-  <div class="category" id="meat">
-    <h2 id="title-meat">🍖 Kött</h2>
-    <ul></ul>
+  <div id="fridge-container">
+    <div class="category" id="unsorted">
+      <h2 id="title-unsorted">📦 Okategoriserat</h2>
+      <ul></ul>
+    </div>
+    <div class="category" id="dairy">
+      <h2 id="title-dairy">🥛 Mejeri</h2>
+      <ul></ul>
+    </div>
+    <div class="category" id="vegetables">
+      <h2 id="title-vegetables">🥦 Grönsaker</h2>
+      <ul></ul>
+    </div>
+    <div class="category" id="meat">
+      <h2 id="title-meat">🍖 Kött</h2>
+      <ul></ul>
+    </div>
   </div>
 </div>
 

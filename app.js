@@ -19,9 +19,10 @@ class FridgeApp {
   
       this.texts = {
         "en-US": {
-          pageTitle: "My Fridge",
-          addButton: "Add Item",
-          voiceButton: "Voice Input",
+          pageTitle: "🧊 My Fridge",
+          addButton: "➕ Add Item",
+          voiceButton: "🎤 Voice Input",
+          placeholder: "Add item with date...",
           categories: {
             unsorted: "📦 Unsorted",
             dairy: "🥛 Dairy",
@@ -30,14 +31,117 @@ class FridgeApp {
           }
         },
         "sv-SE": {
-          pageTitle: "Min Kyl",
-          addButton: "Lägg till",
-          voiceButton: "Röstinmatning",
+          pageTitle: "🧊 Min Kyl",
+          addButton: "➕ Lägg till",
+          voiceButton: "🎤 Säg vara",
+          placeholder: "Lägg till kylvara med datum...",
           categories: {
             unsorted: "📦 Okategoriserat",
             dairy: "🥛 Mejeri",
             vegetables: "🥦 Grönsaker",
             meat: "🍖 Kött"
+          }
+        }
+      };
+
+      // Date parsing patterns
+      this.datePatterns = {
+        swedish: {
+          months: {
+            'januari': 1, 'jan': 1,
+            'februari': 2, 'feb': 2,
+            'mars': 3, 'mar': 3,
+            'april': 4, 'apr': 4,
+            'maj': 5,
+            'juni': 6, 'jun': 6,
+            'juli': 7, 'jul': 7,
+            'augusti': 8, 'aug': 8,
+            'september': 9, 'sep': 9, 'sept': 9,
+            'oktober': 10, 'okt': 10,
+            'november': 11, 'nov': 11,
+            'december': 12, 'dec': 12
+          },
+          ordinals: {
+            'första': 1, '1:a': 1, '1a': 1,
+            'andra': 2, '2:a': 2, '2a': 2,
+            'tredje': 3, '3:e': 3, '3e': 3,
+            'fjärde': 4, '4:e': 4, '4e': 4,
+            'femte': 5, '5:e': 5, '5e': 5,
+            'sjätte': 6, '6:e': 6, '6e': 6,
+            'sjunde': 7, '7:e': 7, '7e': 7,
+            'åttonde': 8, '8:e': 8, '8e': 8,
+            'nionde': 9, '9:e': 9, '9e': 9,
+            'tionde': 10, '10:e': 10, '10e': 10,
+            'elfte': 11, '11:e': 11, '11e': 11,
+            'tolfte': 12, 'tolvte': 12, '12:e': 12, '12e': 12,
+            'trettonde': 13, '13:e': 13, '13e': 13,
+            'fjortonde': 14, '14:e': 14, '14e': 14,
+            'femtonde': 15, '15:e': 15, '15e': 15,
+            'sextonde': 16, '16:e': 16, '16e': 16,
+            'sjuttonde': 17, '17:e': 17, '17e': 17,
+            'artonde': 18, '18:e': 18, '18e': 18,
+            'nittonde': 19, '19:e': 19, '19e': 19,
+            'tjugonde': 20, '20:e': 20, '20e': 20,
+            'tjugoförsta': 21, '21:a': 21, '21a': 21,
+            'tjugoandra': 22, '22:a': 22, '22a': 22,
+            'tjugotredje': 23, '23:e': 23, '23e': 23,
+            'tjugofjärde': 24, '24:e': 24, '24e': 24,
+            'tjugofemte': 25, '25:e': 25, '25e': 25,
+            'tjugosjätte': 26, '26:e': 26, '26e': 26,
+            'tjugosjunde': 27, '27:e': 27, '27e': 27,
+            'tjugoåttonde': 28, '28:e': 28, '28e': 28,
+            'tjugonionde': 29, '29:e': 29, '29e': 29,
+            'trettionde': 30, '30:e': 30, '30e': 30,
+            'trettioförsta': 31, '31:a': 31, '31a': 31
+          }
+        },
+        english: {
+          months: {
+            'january': 1, 'jan': 1,
+            'february': 2, 'feb': 2,
+            'march': 3, 'mar': 3,
+            'april': 4, 'apr': 4,
+            'may': 5,
+            'june': 6, 'jun': 6,
+            'july': 7, 'jul': 7,
+            'august': 8, 'aug': 8,
+            'september': 9, 'sep': 9, 'sept': 9,
+            'october': 10, 'oct': 10,
+            'november': 11, 'nov': 11,
+            'december': 12, 'dec': 12
+          },
+          ordinals: {
+            'first': 1, '1st': 1,
+            'second': 2, '2nd': 2,
+            'third': 3, '3rd': 3,
+            'fourth': 4, '4th': 4,
+            'fifth': 5, '5th': 5,
+            'sixth': 6, '6th': 6,
+            'seventh': 7, '7th': 7,
+            'eighth': 8, '8th': 8,
+            'ninth': 9, '9th': 9,
+            'tenth': 10, '10th': 10,
+            'eleventh': 11, '11th': 11,
+            'twelfth': 12, '12th': 12,
+            'thirteenth': 13, '13th': 13,
+            'fourteenth': 14, '14th': 14,
+            'fifteenth': 15, '15th': 15,
+            'sixteenth': 16, '16th': 16,
+            'seventeenth': 17, '17th': 17,
+            'eighteenth': 18, '18th': 18,
+            'nineteenth': 19, '19th': 19,
+            'twentieth': 20, '20th': 20,
+            'twenty-first': 21, '21st': 21,
+            'twenty-second': 22, '22nd': 22,
+            'twenty-third': 23, '23rd': 23,
+            'twenty-fourth': 24, '24th': 24,
+            'twenty-fifth': 25, '25th': 25,
+            'twenty-sixth': 26, '26th': 26,
+            'twenty-seventh': 27, '27th': 27,
+            'twenty-eighth': 28, '28th': 28,
+            'twenty-ninth': 29, '29th': 29,
+            'thirtieth': 30, '30th': 30,
+            'thirty-first': 31, '31st': 31
           }
         }
       };
@@ -89,7 +193,7 @@ class FridgeApp {
       this.elements.pageTitle.textContent = t.pageTitle;
       this.elements.addButton.textContent = t.addButton;
       this.elements.voiceButton.textContent = t.voiceButton;
-      this.elements.itemInput.placeholder = `${t.addButton}...`;
+      this.elements.itemInput.placeholder = t.placeholder;
   
       document.getElementById('title-unsorted').innerText = t.categories.unsorted;
       document.getElementById('title-dairy').innerText = t.categories.dairy;
@@ -120,6 +224,197 @@ class FridgeApp {
       });
     };
   
+    /** ---------------------- DATE PARSING ----------------------- */
+    parseDate = (text) => {
+      const normalizedText = text.toLowerCase().trim();
+      const currentYear = new Date().getFullYear();
+      
+      // Try different date formats
+      const parsedDate = this.tryParseNumericDate(normalizedText, currentYear) ||
+                        this.tryParseTextualDate(normalizedText, currentYear) ||
+                        this.tryParseRelativeDate(normalizedText);
+      
+      return parsedDate;
+    };
+    
+    tryParseNumericDate = (text, currentYear) => {
+      // Patterns like: 2025-07-30, 07-30, 30/7, 30-7, 30.7
+      const patterns = [
+        /(\d{4})-(\d{1,2})-(\d{1,2})/,  // 2025-07-30
+        /(\d{1,2})-(\d{1,2})-(\d{4})/,  // 30-07-2025
+        /(\d{1,2})\/(\d{1,2})\/(\d{4})/, // 30/07/2025
+        /(\d{1,2})\.(\d{1,2})\.(\d{4})/, // 30.07.2025
+        /(\d{1,2})-(\d{1,2})/,          // 30-07 or 07-30
+        /(\d{1,2})\/(\d{1,2})/,         // 30/07 or 07/30
+        /(\d{1,2})\.(\d{1,2})/          // 30.07 or 07.30
+      ];
+      
+      for (const pattern of patterns) {
+        const match = text.match(pattern);
+        if (match) {
+          let year, month, day;
+          
+          if (match[1].length === 4 || match[3]?.length === 4) {
+            // Full year format
+            if (match[1].length === 4) {
+              [, year, month, day] = match;
+            } else {
+              [, day, month, year] = match;
+            }
+          } else {
+            // No year, assume current year
+            year = currentYear;
+            
+            // Determine if it's day-month or month-day based on values
+            const first = parseInt(match[1]);
+            const second = parseInt(match[2]);
+            
+            if (first > 12) {
+              // First number > 12, must be day
+              day = first;
+              month = second;
+            } else if (second > 12) {
+              // Second number > 12, must be day
+              month = first;
+              day = second;
+            } else {
+              // Both <= 12, assume day-month for European format
+              day = first;
+              month = second;
+            }
+          }
+          
+          const date = new Date(parseInt(year), parseInt(month) - 1, parseInt(day));
+          if (this.isValidDate(date) && date.getDate() == parseInt(day) && date.getMonth() == parseInt(month) - 1) {
+            return date;
+          }
+        }
+      }
+      return null;
+    };
+    
+    tryParseTextualDate = (text, currentYear) => {
+      const lang = this.state.recognitionLang.startsWith('sv') ? 'swedish' : 'english';
+      const patterns = this.datePatterns[lang];
+      
+      // Look for month names
+      for (const [monthName, monthNum] of Object.entries(patterns.months)) {
+        if (text.includes(monthName)) {
+          // Look for day number or ordinal
+          let day = null;
+          
+          // Try ordinals first (sort by length descending to match longer phrases first)
+          const sortedOrdinals = Object.entries(patterns.ordinals).sort((a, b) => b[0].length - a[0].length);
+          for (const [ordinal, dayNum] of sortedOrdinals) {
+            if (text.includes(ordinal)) {
+              day = dayNum;
+              break;
+            }
+          }
+          
+          // If no ordinal found, look for plain numbers
+          if (!day) {
+            const dayMatch = text.match(/\b(\d{1,2})\b/);
+            if (dayMatch) {
+              day = parseInt(dayMatch[1]);
+            }
+          }
+          
+          if (day && day >= 1 && day <= 31) {
+            const date = new Date(currentYear, monthNum - 1, day);
+            if (this.isValidDate(date) && date.getDate() == day && date.getMonth() == monthNum - 1) {
+              return date;
+            }
+          }
+        }
+      }
+      
+      return null;
+    };
+    
+    tryParseRelativeDate = (text) => {
+      const today = new Date();
+      
+      // Swedish relative dates
+      if (this.state.recognitionLang.startsWith('sv')) {
+        if (text.includes('idag')) {
+          return new Date(today);
+        }
+        if (text.includes('imorgon')) {
+          const tomorrow = new Date(today);
+          tomorrow.setDate(tomorrow.getDate() + 1);
+          return tomorrow;
+        }
+        if (text.includes('övermorgon')) {
+          const dayAfterTomorrow = new Date(today);
+          dayAfterTomorrow.setDate(dayAfterTomorrow.getDate() + 2);
+          return dayAfterTomorrow;
+        }
+      } else {
+        // English relative dates
+        if (text.includes('today')) {
+          return new Date(today);
+        }
+        if (text.includes('tomorrow')) {
+          const tomorrow = new Date(today);
+          tomorrow.setDate(tomorrow.getDate() + 1);
+          return tomorrow;
+        }
+      }
+      
+      return null;
+    };
+    
+    isValidDate = (date) => {
+      return date instanceof Date && !isNaN(date) && date.getFullYear() > 1900;
+    };
+    
+    calculateDaysLeft = (expiryDate) => {
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+      const expiry = new Date(expiryDate);
+      expiry.setHours(0, 0, 0, 0);
+      return Math.ceil((expiry - today) / (1000 * 60 * 60 * 24));
+    };
+    
+    formatExpiryDisplay = (expiryDate) => {
+      const daysLeft = this.calculateDaysLeft(expiryDate);
+      const date = new Date(expiryDate);
+      const dateStr = date.toLocaleDateString(this.state.recognitionLang);
+      
+      if (daysLeft < 0) {
+        return {
+          text: `${dateStr} (${Math.abs(daysLeft)} days ago)`,
+          class: 'expired',
+          daysLeft: Math.abs(daysLeft) + ' days ago'
+        };
+      } else if (daysLeft === 0) {
+        return {
+          text: `${dateStr} (Today)`,
+          class: 'expiring',
+          daysLeft: 'Today'
+        };
+      } else if (daysLeft === 1) {
+        return {
+          text: `${dateStr} (Tomorrow)`,
+          class: 'expiring',
+          daysLeft: 'Tomorrow'
+        };
+      } else if (daysLeft <= 3) {
+        return {
+          text: `${dateStr} (${daysLeft} days)`,
+          class: 'expiring',
+          daysLeft: daysLeft + ' days'
+        };
+      } else {
+        return {
+          text: `${dateStr} (${daysLeft} days)`,
+          class: 'normal',
+          daysLeft: daysLeft + ' days'
+        };
+      }
+    };
+  
     /** ---------------------- ITEM OPERATIONS -------------------- */
     getItems = () => JSON.parse(localStorage.getItem('fridgeItems')) || [];
   
@@ -132,22 +427,78 @@ class FridgeApp {
       items.forEach((item, index) => this.renderItem(item, index));
     };
   
-    addItem = (name, days = 7) => {
-      if (!name.trim()) return;
-      const items = this.getItems();
-      const expires = new Date();
+    addItem = (input, days = 7) => {
+      if (!input || !input.trim()) return;
       
-      // For testing purposes, always use 7 days if we're in a test environment
-      if (typeof jest !== 'undefined') {
-        expires.setDate(expires.getDate() + 7);
+      const items = this.getItems();
+      let name = input.trim();
+      let expires = new Date();
+      
+      // Try to parse date from input
+      const parsedDate = this.parseDate(input);
+      if (parsedDate) {
+        expires = parsedDate;
+        // Remove date part from name
+        name = this.extractItemName(input);
       } else {
-        expires.setDate(expires.getDate() + days);
+        // For testing purposes, always use 7 days if we're in a test environment
+        if (typeof jest !== 'undefined') {
+          expires.setDate(expires.getDate() + 7);
+        } else {
+          expires.setDate(expires.getDate() + days);
+        }
       }
+      
+      if (!name.trim()) return;
       
       items.push({ name, category: 'unsorted', expires });
       this.saveItems(items);
       this.elements.itemInput.value = '';
       this.loadItems();
+    };
+    
+    extractItemName = (input) => {
+      let name = input.toLowerCase().trim();
+      
+      // Remove common date patterns
+      const datePatterns = [
+        /\d{4}-\d{1,2}-\d{1,2}/g,
+        /\d{1,2}-\d{1,2}-\d{4}/g,
+        /\d{1,2}\/\d{1,2}\/\d{4}/g,
+        /\d{1,2}\.\d{1,2}\.\d{4}/g,
+        /\d{1,2}-\d{1,2}/g,
+        /\d{1,2}\/\d{1,2}/g,
+        /\d{1,2}\.\d{1,2}/g,
+        /\b\d{1,2}\b/g  // Remove standalone numbers
+      ];
+      
+      datePatterns.forEach(pattern => {
+        name = name.replace(pattern, '');
+      });
+      
+      // Remove month names and ordinals
+      const lang = this.state.recognitionLang.startsWith('sv') ? 'swedish' : 'english';
+      const patterns = this.datePatterns[lang];
+      
+      Object.keys(patterns.months).forEach(month => {
+        name = name.replace(new RegExp(`\\b${month}\\b`, 'g'), '');
+      });
+      
+      // Sort ordinals by length descending to match longer phrases first
+      const sortedOrdinals = Object.keys(patterns.ordinals).sort((a, b) => b.length - a.length);
+      sortedOrdinals.forEach(ordinal => {
+        name = name.replace(new RegExp(`\\b${ordinal.replace(/[-]/g, '\\-')}\\b`, 'g'), '');
+      });
+      
+      // Remove relative date words
+      if (this.state.recognitionLang.startsWith('sv')) {
+        name = name.replace(/\b(idag|imorgon|övermorgon)\b/g, '');
+      } else {
+        name = name.replace(/\b(today|tomorrow)\b/g, '');
+      }
+      
+      // Clean up extra spaces and return
+      return name.replace(/\s+/g, ' ').trim();
     };
   
     updateExpiry = (index, days) => {
@@ -174,16 +525,22 @@ class FridgeApp {
       li.className = 'fridge-item';
       li.draggable = true;
       li.dataset.index = index;
-      const daysLeft = this.calculateDaysLeft(item.expires);
-      li.style.backgroundColor = this.getItemColor(daysLeft);
+      
+      const expiryInfo = this.formatExpiryDisplay(item.expires);
+      li.classList.add(expiryInfo.class);
   
       li.innerHTML = `
-        <span class="item-name">${item.name}</span>
-        <span class="expire" data-index="${index}">(${daysLeft}d)</span>
+        <div class="item-info">
+          <div class="item-name">${item.name}</div>
+          <div class="item-expiry">
+            <span>${expiryInfo.text}</span>
+            <span class="days-left ${expiryInfo.class}">${expiryInfo.daysLeft}</span>
+          </div>
+        </div>
         <button class="delete-button" data-index="${index}">×</button>
       `;
   
-      li.querySelector('.expire').addEventListener('click', (e) => this.promptUpdateDays(e));
+      li.querySelector('.item-expiry').addEventListener('click', (e) => this.promptUpdateDays(e, index));
       li.querySelector('.delete-button').addEventListener('click', (e) => this.deleteItem(e));
       li.addEventListener('dragstart', (e) => this.startDrag(e));
       li.addEventListener('dragend', (e) => this.endDrag(e));
@@ -200,8 +557,7 @@ class FridgeApp {
       this.loadItems();
     };
   
-    promptUpdateDays = (event) => {
-      const index = event.target.dataset.index;
+    promptUpdateDays = (event, index) => {
       const newDays = prompt(this.state.recognitionLang === 'sv-SE' ? 'Ange nya dagar:' : 'Enter new days:', '7');
       if (newDays) this.updateExpiry(index, parseInt(newDays));
     };
@@ -274,7 +630,34 @@ class FridgeApp {
     processVoiceCommand = (transcript) => {
         const items = this.getItems();
         
-        // First, save the original transcript for later use
+        // First, try to parse as a date-based command
+        const parsedDate = this.parseDate(transcript);
+        if (parsedDate) {
+            const itemName = this.extractItemName(transcript);
+            if (itemName) {
+                // Check if this item already exists
+                const existing = items.findIndex(item => 
+                    item.name.toLowerCase() === itemName.toLowerCase() ||
+                    itemName.toLowerCase().includes(item.name.toLowerCase()) ||
+                    item.name.toLowerCase().includes(itemName.toLowerCase())
+                );
+                
+                if (existing !== -1) {
+                    // Update existing item with new date
+                    items[existing].expires = parsedDate;
+                    this.saveItems(items);
+                    this.loadItems();
+                } else {
+                    // Add new item with parsed date
+                    items.push({ name: itemName, category: 'unsorted', expires: parsedDate });
+                    this.saveItems(items);
+                    this.loadItems();
+                }
+                return;
+            }
+        }
+        
+        // Fallback to the original number-based processing
         const originalTranscript = transcript.toLowerCase();
         
         // Convert number words to digits
