@@ -2,7 +2,7 @@ name: Dependabot Auto-Merge
 
 on:
   pull_request:
-    branches: [ main, master ]
+    branches: [ openhands-workspace ]
 
 permissions:
   contents: write
